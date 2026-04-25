@@ -6,7 +6,7 @@ from app.db.session import engine, Base
 from app.models import user_model, restaurant_model, product_model, sale_model
 
 # Routers
-from app.routers import auth, restaurants, products, sales
+from app.routers import auth, restaurants, products, sales, ai, reports
 
 # Excepciones personalizadas
 from app.core.exceptions import (
@@ -25,7 +25,6 @@ Base.metadata.create_all(bind=engine)
 # =========================
 # MANEJO GLOBAL DE ERRORES
 # =========================
-
 @app.exception_handler(NotAuthorizedException)
 def not_authorized_handler(request, exc):
     return JSONResponse(
@@ -76,3 +75,5 @@ app.include_router(auth.router, tags=["Auth"])
 app.include_router(restaurants.router)
 app.include_router(products.router)
 app.include_router(sales.router)
+app.include_router(ai.router)
+app.include_router(reports.router)

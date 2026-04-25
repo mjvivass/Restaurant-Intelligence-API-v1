@@ -12,13 +12,11 @@ class Product(Base):
     description = Column(String(250), nullable=True)
     price = Column(Float, nullable=False)
 
-    # INVENTARIO
     stock = Column(Integer, nullable=False, default=0)
     min_stock = Column(Integer, nullable=False, default=5)
     last_updated = Column(DateTime, default=datetime.utcnow)
 
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"), nullable=False)
 
-    # RELACIONES
     restaurant = relationship("Restaurant", back_populates="products")
-    sales = relationship("Sale", back_populates="product")
+    sale_details = relationship("SaleDetail", back_populates="product")

@@ -74,3 +74,28 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+
+# 🔐 Require roles (MEJORADO)
+def require_roles(allowed_roles: list[str]):
+    def role_dependency(user: User = Depends(get_current_user)):
+        if user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied. Required roles: {allowed_roles}"
+            )
+        return user
+    return role_dependency
+
+
+# 🔥 Helpers listos
+def require_admin(user: User = Depends(require_roles(["admin"]))):
+    return user
+
+
+def require_manager(user: User = Depends(require_roles(["admin", "manager"]))):
+    return user
+
+
+def require_employee(user: User = Depends(require_roles(["admin", "manager", "employee"]))):
+    return user

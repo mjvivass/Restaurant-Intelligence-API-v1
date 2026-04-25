@@ -1,17 +1,31 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+from typing import Optional
+from datetime import datetime
 
-class RestaurantCreate(BaseModel):
+
+class RestaurantBase(BaseModel):
     name: str
-    address: str
-    email: str
-    phone: str
+    email: EmailStr
+    phone: Optional[str] = None
+    address: Optional[str] = None
 
-class RestaurantResponse(BaseModel):
+
+class RestaurantCreate(RestaurantBase):
+    pass
+
+
+class RestaurantUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    active: Optional[bool] = None
+
+
+class RestaurantResponse(RestaurantBase):
     id: int
-    name: str
-    address: str
-    email: str
-    phone: str
+    created_at: datetime
+    active: bool
 
     class Config:
-        from_attributes = True 
+        from_attributes = True

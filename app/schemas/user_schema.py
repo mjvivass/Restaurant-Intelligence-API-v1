@@ -24,6 +24,7 @@ class UserResponse(BaseModel):
     id: int
     username: str
     email: EmailStr
+    role: str   # 🔥 AÑADE ESTO
 
     class Config:
         from_attributes = True  # Correcto para Pydantic V2

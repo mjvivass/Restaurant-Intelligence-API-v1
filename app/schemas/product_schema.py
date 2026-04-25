@@ -11,6 +11,14 @@ class ProductCreate(BaseModel):
     restaurant_id: int
 
 
+class ProductUpdate(BaseModel):
+    name: str
+    description: Optional[str] = None
+    price: float
+    stock: int
+    min_stock: int
+
+
 class ProductResponse(BaseModel):
     id: int
     name: str

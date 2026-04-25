@@ -19,7 +19,8 @@ def register_user(user_data, db: Session):
     new_user = User(
         username=user_data.username,
         email=user_data.email,
-        hashed_password=hashed
+        hashed_password=hashed,
+        role="admin"
     )
 
     db.add(new_user)
@@ -31,19 +32,26 @@ def register_user(user_data, db: Session):
 
 def login_user(form_data, db: Session):
     user = db.query(User).filter(
-        User.email == form_data.username
+        (User.email == form_data.username) |
+        (User.username == form_data.username)
     ).first()
 
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
 
     access_token = create_access_token(
-        data={"user_id": user.id},
+        data={
+            "user_id": user.id,
+            "role": user.role
+        },
         expires_delta=timedelta(minutes=30)
     )
 
     refresh_token = create_access_token(
-        data={"user_id": user.id},
+        data={
+            "user_id": user.id,
+            "role": user.role
+        },
         expires_delta=timedelta(days=7)
     )
 
